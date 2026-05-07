@@ -9,10 +9,7 @@ BASE_URL = "http://127.0.0.1:8000"
 def start_chaos(failure_rate: float, latency_ms: int):
     response = requests.post(
         f"{BASE_URL}/chaos/start",
-        params={
-            "failure_rate": failure_rate,
-            "latency_ms": latency_ms,
-        },
+        params={"failure_rate": failure_rate, "latency_ms": latency_ms},
         timeout=5,
     )
     response.raise_for_status()
@@ -68,7 +65,6 @@ def run_experiment(failure_rate: float, latency_ms: int, iterations: int, delay:
 
 def main():
     parser = argparse.ArgumentParser(description="Cloud Chaos Lab Runner")
-
     parser.add_argument("--failure-rate", type=float, default=0.5)
     parser.add_argument("--latency-ms", type=int, default=500)
     parser.add_argument("--iterations", type=int, default=20)
