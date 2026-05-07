@@ -1,0 +1,99 @@
+{
+  "timestamp": "2026-05-07T20:27:47.509072",
+  "iterations": 15,
+  "successes": 5,
+  "failures": 10,
+  "failure_rate_percent": 66.67,
+  "results": [
+    {
+      "probe": 1,
+      "status": "PASS",
+      "status_code": 200,
+      "latency_ms": 1210.41
+    },
+    {
+      "probe": 2,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1211.59
+    },
+    {
+      "probe": 3,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1209.93
+    },
+    {
+      "probe": 4,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1211.01
+    },
+    {
+      "probe": 5,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1209.59
+    },
+    {
+      "probe": 6,
+      "status": "PASS",
+      "status_code": 200,
+      "latency_ms": 1211.39
+    },
+    {
+      "probe": 7,
+      "status": "PASS",
+      "status_code": 200,
+      "latency_ms": 1209.83
+    },
+    {
+      "probe": 8,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1206.29
+    },
+    {
+      "probe": 9,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1209.56
+    },
+    {
+      "probe": 10,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1208.49
+    },
+    {
+      "probe": 11,
+      "status": "PASS",
+      "status_code": 200,
+      "latency_ms": 1210.86
+    },
+    {
+      "probe": 12,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1209.02
+    },
+    {
+      "probe": 13,
+      "status": "PASS",
+      "status_code": 200,
+      "latency_ms": 1212.68
+    },
+    {
+      "probe": 14,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1207.45
+    },
+    {
+      "probe": 15,
+      "status": "FAIL",
+      "status_code": 503,
+      "latency_ms": 1211.46
+    }
+  ]
+}

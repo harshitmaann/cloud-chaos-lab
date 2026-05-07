@@ -1,5 +1,9 @@
 import argparse
+import json
 import time
+from datetime import datetime
+from pathlib import Path
+
 import requests
 
 
@@ -25,6 +29,7 @@ def stop_chaos():
 def run_probe(iterations: int, delay: float):
     success = 0
     failures = 0
+    results = []
 
     print(f"Running {iterations} probes against /api/data...")
 
@@ -36,14 +41,35 @@ def run_probe(iterations: int, delay: float):
 
             if response.status_code == 200:
                 success += 1
-                print(f"[{i}] PASS {response.status_code} {elapsed_ms}ms")
+                status = "PASS"
             else:
                 failures += 1
-                print(f"[{i}] FAIL {response.status_code} {elapsed_ms}ms")
+                status = "FAIL"
+
+            print(f"[{i}] {status} {response.status_code} {elapsed_ms}ms")
+
+            results.append(
+                {
+                    "probe": i,
+                    "status": status,
+                    "status_code": response.status_code,
+                    "latency_ms": elapsed_ms,
+                }
+            )
 
         except requests.RequestException as error:
             failures += 1
             print(f"[{i}] ERROR {error}")
+
+            results.append(
+                {
+                    "probe": i,
+                    "status": "ERROR",
+                    "status_code": None,
+                    "latency_ms": None,
+                    "error": str(error),
+                }
+            )
 
         time.sleep(delay)
 
@@ -53,6 +79,26 @@ def run_probe(iterations: int, delay: float):
     print(f"Successes: {success}")
     print(f"Failures: {failures}")
     print(f"Failure rate observed: {round((failures / iterations) * 100, 2)}%")
+
+    report = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "iterations": iterations,
+        "successes": success,
+        "failures": failures,
+        "failure_rate_percent": round((failures / iterations) * 100, 2),
+        "results": results,
+    }
+
+    reports_dir = Path("reports")
+    reports_dir.mkdir(exist_ok=True)
+
+    filename = f"chaos_report_{int(time.time())}.json"
+    report_path = reports_dir / filename
+
+    with open(report_path, "w") as file:
+        json.dump(report, file, indent=2)
+
+    print(f"\nReport saved to: {report_path}")
 
 
 def run_experiment(failure_rate: float, latency_ms: int, iterations: int, delay: float):
