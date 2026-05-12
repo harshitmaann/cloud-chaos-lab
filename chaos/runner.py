@@ -4,6 +4,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+import docker
 import requests
 
 
@@ -109,21 +110,58 @@ def run_experiment(failure_rate: float, latency_ms: int, iterations: int, delay:
         stop_chaos()
 
 
+def kill_container(container_name: str):
+    client = docker.from_env()
+    container = client.containers.get(container_name)
+    container.reload()
+
+    print(f"Target container: {container_name}")
+    print(f"Initial status: {container.status}")
+
+    if container.status == "running":
+        print(f"Injecting failure by killing container: {container_name}")
+        container.kill()
+        print("Waiting 3 seconds after failure injection...")
+        time.sleep(3)
+    else:
+        print(f"Container is not running, skipping kill step: {container.status}")
+
+    container.reload()
+    print(f"Status after failure window: {container.status}")
+
+    if container.status != "running":
+        print(f"Recovering container: {container_name}")
+        container.start()
+
+    print("Waiting for recovery verification...")
+    time.sleep(5)
+
+    container.reload()
+    print(f"Container status after recovery window: {container.status}")
+
+    if container.status == "running":
+        print("Recovery verified: PASS")
+    else:
+        print("Recovery verified: FAIL")
 def main():
     parser = argparse.ArgumentParser(description="Cloud Chaos Lab Runner")
     parser.add_argument("--failure-rate", type=float, default=0.5)
     parser.add_argument("--latency-ms", type=int, default=500)
     parser.add_argument("--iterations", type=int, default=20)
     parser.add_argument("--delay", type=float, default=0.2)
+    parser.add_argument("--kill-container", type=str, default=None)
 
     args = parser.parse_args()
 
-    run_experiment(
-        failure_rate=args.failure_rate,
-        latency_ms=args.latency_ms,
-        iterations=args.iterations,
-        delay=args.delay,
-    )
+    if args.kill_container:
+        kill_container(args.kill_container)
+    else:
+        run_experiment(
+            failure_rate=args.failure_rate,
+            latency_ms=args.latency_ms,
+            iterations=args.iterations,
+            delay=args.delay,
+        )
 
 
 if __name__ == "__main__":

@@ -4,11 +4,11 @@ services:
     container_name: api-service
     ports:
       - "8000:8000"
-    restart: unless-stopped
+    restart: always
 
   backend-service:
     image: nginx:latest
     container_name: backend-service
     ports:
       - "8080:80"
-    restart: unless-stopped
+    restart: always
