@@ -32,6 +32,38 @@ A chaos engineering lab for simulating production failures, validating automated
 +-------------+
 ```
 
+## Screenshots
+
+### Grafana Metrics Dashboard
+
+![Grafana Dashboard](assets/grafana-dashboard.png)
+
+Live observability dashboard showing Prometheus metrics during simulated chaos experiments.
+
+---
+
+### Prometheus Target Health
+
+![Prometheus Targets](assets/prometheus-targets.png)
+
+Prometheus successfully scraping the API metrics endpoint and monitoring service health.
+
+---
+
+### Dockerized Services
+
+![Docker Services](assets/docker-services.png)
+
+Multi-container local environment running Grafana, Prometheus, API services, and backend infrastructure.
+
+---
+
+### Chaos Experiment Runner
+
+![Chaos Runner](assets/chaos-runner.png)
+
+Chaos engineering simulation injecting latency and failures to validate service resiliency and monitoring visibility.
+
 ## Tech Stack
 
 - Python
